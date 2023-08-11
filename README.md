@@ -42,3 +42,18 @@ dokku proxy:ports-set <app-name> http:80:<port-exposed-by-docker-container>
 ### SSL Certs
 
 If adding an existing cert/key pair, they must be named `server.crt` and `server.key` and put in a `.tar` file named `cert-key.tar` then uploaded to your Droplet.
+
+```
+tar cvf cert-key.tar server.crt server.key
+scp cert-key.tar root@<domain.tld>:/root
+```
+
+In your Droplet:
+
+```
+dokku certs:add <app-name> < cert-key.tar
+```
+
+Alternatively, you can use the [dokku-letsencrypt](https://github.com/dokku/dokku-letsencrypt) plugin.
+
+\*letsencrypt will rate limit to 5 API calls per 7 day period.
